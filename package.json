@@ -1,0 +1,29 @@
+{
+  "name": "liribot",
+  "version": "1.0.0",
+  "description": "bot interpreter using node",
+  "main": "keys.js",
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "node-spotify-api": "^1.0.5",
+    "twitter": "^1.7.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daj757/LiriBot.git"
+  },
+  "keywords": [
+    "language",
+    "interpreter"
+  ],
+  "author": "Daniel Jimenez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daj757/LiriBot/issues"
+  },
+  "homepage": "https://github.com/daj757/LiriBot#readme"
+}
