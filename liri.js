@@ -1,4 +1,7 @@
+var logCount = 0;
 var tkeys = require('./keys.js');
+var request = require('request');
+var fs = require("fs");
 var client = tkeys.twitterKeys;
 var nodeArgs1 = process.argv[2];
 var commandArray = [];
@@ -10,14 +13,23 @@ var command2 = commandArray.join(" ");
 var command1 = String(nodeArgs1);
 var twitter = require('twitter');
 var spotify = require('node-spotify-api');
-console.log(command1 + " " + command2);
+
 
 switch(command1){
 	case "my-tweets":
 	myTweets();
+	log(command1, command2);
 	break;
 	case "spotify-this-song":
-	musicSearch(command2);
+	musicSearch(command2.trim());
+	log(command1, command2);
+	break;
+	case "movie-this":
+	movieSearch(command2);
+	log(command1, command2);
+	break;
+	case "do-what-it-says":
+	doIt();
 	break;
 
 
@@ -77,6 +89,78 @@ function musicSearch(song){
 
 });
 };
+
+function movieSearch(movie){
+	if(movie === ""){
+		movie = "Mr.Nobody"
+		console.log("You have not entered a specific movie... Check out " + movie)
+	}
+	var queryURL = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=40e9cece";
+	
+	request(queryURL, function(error, response, body) {
+
+    if (!error && response.statusCode === 200) {
+  	console.log("You movie you have searched for is: " + JSON.parse(body).Title);
+    
+	console.log("The movie's release year is: " + JSON.parse(body).Year);
+    
+    console.log("The movie's IMDB rating is: " + JSON.parse(body).imdbRating);
+
+	console.log("The movie's rotten tomatoes rating is: " + JSON.parse(body).tomatoUserRating);
+
+	console.log("The movie's plot is: " + JSON.parse(body).Plot);
+
+	console.log("The movie's actors are: " + JSON.parse(body).Actors);
+
+	console.log("The movie's country of production is: " + JSON.parse(body).Country);
+  }
+});
+}
+
+function doIt(){
+	fs.readFile("random.txt", "utf8", function(error,data){
+		var content = data.split(",");
+
+		command1 = content[0];
+		command2 = content[1];
+
+switch(command1){
+	case "my-tweets":
+	myTweets();
+	break;
+	case "spotify-this-song":
+	musicSearch(command2.trim());
+	break;
+	case "movie-this":
+	movieSearch(command2);
+	break;
+	case "do-what-it-says":
+	doIt();
+	break;
+
+
+}
+
+	});
+
+}
+function log (command, input){
+
+	logCount++
+
+	var log = logCount + " " + command + " " + input +"\r\n";
+	fs.appendFile("logs.txt", log , function(err) {
+	 //if an error occurs
+	  if (err) {
+	    console.log(err);
+	  }
+
+	  else {
+	    console.log("Your query has been logged!");
+	  }
+	});
+
+}
 
 
 
